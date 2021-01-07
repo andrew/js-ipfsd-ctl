@@ -13,29 +13,10 @@
     "build": "aegir build",
     "test": "aegir test",
     "test:node": "aegir test -t node",
-    "test:browser": "aegir test -t browser",
     "release": "aegir release --timeout 10000",
     "release-minor": "aegir release --type minor",
     "release-major": "aegir release --type major",
     "coverage": "aegir coverage --timeout 50000"
-  },
-  "browser": {
-    "./src/endpoint/server.js": "./src/endpoint/server.browser.js",
-    "./src/utils.js": "./src/utils.browser.js",
-    "./src/ipfsd-daemon.js": "./src/ipfsd-client.js",
-    "go-ipfs": false
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && npx aegir dep-check",
-      "commit-msg": "npx aegir commitlint -- -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix -c node_modules/aegir/src/config/eslintrc.js",
-      "git add"
-    ]
   },
   "engines": {
     "node": ">=10.0.0"
@@ -50,13 +31,10 @@
     "daemon"
   ],
   "dependencies": {
-    "@hapi/boom": "^9.1.0",
-    "@hapi/hapi": "^20.0.0",
     "debug": "^4.1.1",
     "execa": "^5.0.0",
     "fs-extra": "^9.0.0",
     "ipfs-utils": "^5.0.1",
-    "joi": "^17.2.1",
     "merge-options": "^3.0.1",
     "multiaddr": "^8.0.0",
     "nanoid": "^3.1.3",
@@ -68,15 +46,11 @@
     "benchmark": "^2.1.4",
     "go-ipfs": "^0.7.0",
     "husky": "^4.2.5",
-    "ipfs": "^0.52.2",
     "ipfs-http-client": "^48.1.2",
     "ipfs-unixfs": "^2.0.3",
     "lint-staged": "^10.1.6"
   },
   "peerDependencies": {
-    "go-ipfs": "*",
-    "ipfs": "*",
-    "ipfs-client": "*",
     "ipfs-http-client": "*"
   },
   "repository": {

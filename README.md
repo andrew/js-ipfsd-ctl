@@ -55,16 +55,21 @@ This is a shorthand for simpler use cases where factory is not needed.
 ```js
 // No need to create a factory when only a single controller is needed.
 // Use createController to spawn it instead.
-const Ctl = require('ipfsd-ctl')
-const ipfsd = await Ctl.createController({
-    ipfsHttpModule: require('ipfs-http-client'),
-    ipfsBin: require('go-ipfs').path()
-})
-const id = await ipfsd.api.id()
+const Ctl = require('ipfsd-ctl');
 
-console.log(id)
+(async () => {
+  const ipfsd = await Ctl.createController({
+      ipfsHttpModule: require('ipfs-http-client'),
+      ipfsBin: require('go-ipfs').path()
+  })
+  const id = await ipfsd.api.id()
 
-await ipfsd.stop()
+  console.log(id)
+
+  await ipfsd.stop()
+})()
+
+
 ```
 
 ### Manage multiple IPFS controllers: `createFactory`
@@ -104,42 +109,6 @@ console.log(await ipfsd2.api.id())
 await factory.clean() // Clean all the controllers created by the factory calling `stop` on all of them.
 ```
 
-**Spawn an IPFS daemon from the Browser using the provided remote endpoint**
-
-```js
-// Start a remote disposable node, and get access to the api
-// print the node id, and stop the temporary daemon
-
-const Ctl = require('ipfsd-ctl')
-
-const port = 9090
-const server = Ctl.createServer(port, {
-    ipfsModule: require('ipfs'),
-    ipfsHttpModule: require('ipfs-http-client')
-},
-{
-    js: {
-        ipfsBin: 'path/js/ipfs/bin'
-    },
-    go: {
-        ipfsBin: 'path/go/ipfs/bin'
-    },
-})
-const factory = Ctl.createFactory({
-    ipfsHttpModule: require('ipfs-http-client'),
-    remote: true,
-    endpoint: `http://localhost:${port}` // or you can set process.env.IPFSD_CTL_SERVER to http://localhost:9090
-})
-
-await server.start()
-const ipfsd = await factory.spawn()
-const id = await ipfsd.api.id()
-
-console.log(id)
-
-await ipfsd.stop()
-await server.stop()
-```
 
 ## Disposable vs non Disposable nodes
 
@@ -164,14 +133,6 @@ Creates a controller.
 - `options` **[ControllerOptions](#controlleroptions)** Factory options.
 
 Returns **Promise&lt;[Controller](#controller)>**
-
-### `createServer([options])`
-Create an Endpoint Server. This server is used by a client node to control a remote node. Example: Spawning a go-ipfs node from a browser.
-
-- `options` **[Object]** Factory options. Defaults to: `{ port: 43134 }`
-  - `port` **number** Port to start the server on.
-
-Returns a **Server**
 
 ### Factory
 

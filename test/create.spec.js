@@ -4,7 +4,7 @@
 const { expect } = require('aegir/utils/chai')
 const { isNode, isBrowser, isWebWorker } = require('ipfs-utils/src/env')
 const pathJoin = require('ipfs-utils/src/path-join')
-const { createFactory, createController, createServer } = require('../src')
+const { createFactory, createController } = require('../src')
 const Client = require('../src/ipfsd-client')
 const Daemon = require('../src/ipfsd-daemon')
 const Proc = require('../src/ipfsd-in-proc')
@@ -205,19 +205,4 @@ describe('`createFactory({test: true})` should return daemon with test profile',
       await factory.clean()
     })
   }
-})
-
-describe('`createServer`', () => {
-  it('should return a Server with port 43134 by default', () => {
-    const s = createServer()
-    expect(s.port).to.be.eq(43134)
-  })
-  it('should return a Server with port 11111 when passed number directly', () => {
-    const s = createServer(11111)
-    expect(s.port).to.be.eq(11111)
-  })
-  it('should return a Server with port 22222 when passed {port: 22222}', () => {
-    const s = createServer({ port: 22222 })
-    expect(s.port).to.be.eq(22222)
-  })
 })
